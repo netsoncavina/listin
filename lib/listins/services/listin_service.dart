@@ -7,8 +7,17 @@ import 'package:uuid/uuid.dart';
 import '../models/listin.dart';
 
 class ListinService {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  late String uid;
+  late FirebaseFirestore firestore;
+
+  ListinService({
+    String? uid,
+    FirebaseFirestore? firestore,
+  }) {
+    uid != null ? this.uid = uid : this.uid = FirebaseAuth.instance.currentUser!.uid;
+
+    firestore != null ? this.firestore = firestore : this.firestore = FirebaseFirestore.instance;
+  }
 
   Future<void> upinsertListin({required Listin listin}) async {
     // Insere ou atualiza o Lisitn com base no id
