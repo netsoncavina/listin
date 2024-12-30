@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_listin/products/data/products_box_handler.dart';
+import 'package:flutter_listin/products/helpers/calculate_total_price.dart';
 import 'package:flutter_listin/products/helpers/enum_order.dart';
 import 'package:flutter_listin/products/screens/widgets/product_add_edit_modal.dart';
 import '../../listins/models/listin.dart';
@@ -97,7 +98,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 child: Column(
                   children: [
                     Text(
-                      "R\$${_calculateTotalPrice().toStringAsFixed(2)}",
+                      "R\$${calculateTotalPriceFromListProduct(listaProdutosPegos).toStringAsFixed(2)}",
                       style: const TextStyle(fontSize: 52),
                     ),
                     const Text(
@@ -134,14 +135,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          subtitle: const Text(
-                              "Produtos planejados para esta compra"),
+                          subtitle: const Text("Produtos planejados para esta compra"),
                         ),
                       );
                     },
                     body: Column(
-                      children: List.generate(listaProdutosPlanejados.length,
-                          (index) {
+                      children: List.generate(listaProdutosPlanejados.length, (index) {
                         Product produto = listaProdutosPlanejados[index];
                         return ProductListItem(
                           listinId: widget.listin.id,
@@ -184,14 +183,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          subtitle: const Text(
-                              "Produtos que já foram postos no carrinho"),
+                          subtitle: const Text("Produtos que já foram postos no carrinho"),
                         ),
                       );
                     },
                     body: Column(
-                      children:
-                          List.generate(listaProdutosPegos.length, (index) {
+                      children: List.generate(listaProdutosPegos.length, (index) {
                         Product produto = listaProdutosPegos[index];
                         return ProductListItem(
                           listinId: widget.listin.id,
@@ -255,15 +252,5 @@ class _ProductsScreenState extends State<ProductsScreen> {
       listaProdutosPegos = tempPegos;
       listaProdutosPlanejados = tempPlanejados;
     });
-  }
-
-  double _calculateTotalPrice() {
-    double total = 0;
-    for (Product produto in listaProdutosPegos) {
-      if (produto.amount != null && produto.price != null) {
-        total += (produto.amount! * produto.price!);
-      }
-    }
-    return total;
   }
 }
