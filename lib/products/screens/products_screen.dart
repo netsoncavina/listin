@@ -144,11 +144,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         Product produto = listaProdutosPlanejados[index];
                         return ProductListItem(
                           listinId: widget.listin.id,
-                          produto: produto,
-                          isComprado: false,
-                          showModal: showAddEditModal,
-                          iconClick: _toggleProductStatus,
-                          trailClick: _removeProduct,
+                          product: produto,
+                          onTap: showAddEditModal,
+                          onCheckboxTap: _toggleProductStatus,
+                          onTrailButtonTap: _removeProduct,
                         );
                       }),
                     ),
@@ -192,11 +191,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         Product produto = listaProdutosPegos[index];
                         return ProductListItem(
                           listinId: widget.listin.id,
-                          produto: produto,
-                          isComprado: true,
-                          showModal: showAddEditModal,
-                          iconClick: _toggleProductStatus,
-                          trailClick: _removeProduct,
+                          product: produto,
+                          onTap: showAddEditModal,
+                          onCheckboxTap: _toggleProductStatus,
+                          onTrailButtonTap: _removeProduct,
                         );
                       }),
                     ),

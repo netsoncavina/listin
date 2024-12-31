@@ -1,51 +1,56 @@
 import 'package:flutter/material.dart';
-import '../../model/product.dart';
+import 'package:flutter_listin/products/model/product.dart';
 
-class ProductListItem extends StatelessWidget {
+class ProductListItem extends StatefulWidget {
   final String listinId;
-  final Product produto;
-  final bool isComprado;
-  final Function showModal;
-  final Function iconClick;
-  final Function trailClick;
+  final Product product;
+  final Function onTap;
+  final Function onCheckboxTap;
+  final Function onTrailButtonTap;
 
   const ProductListItem({
     super.key,
     required this.listinId,
-    required this.produto,
-    required this.isComprado,
-    required this.showModal,
-    required this.iconClick,
-    required this.trailClick,
+    required this.product,
+    required this.onTap,
+    required this.onCheckboxTap,
+    required this.onTrailButtonTap,
   });
 
+  @override
+  State<ProductListItem> createState() => _ProductListItemState();
+}
+
+class _ProductListItemState extends State<ProductListItem> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        showModal(product: produto);
+        widget.onTap(product: widget.product);
       },
       leading: Checkbox(
-        value: isComprado,
+        value: widget.product.isPurchased,
         onChanged: (value) {
-          iconClick(produto: produto, listinId: listinId);
+          setState(() {
+            widget.product.isPurchased = !widget.product.isPurchased;
+          });
+          widget.onCheckboxTap(
+            product: widget.product,
+            listinId: widget.listinId,
+          );
         },
       ),
       trailing: IconButton(
         onPressed: (() {
-          trailClick(produto);
+          widget.onTrailButtonTap(widget.product);
         }),
         icon: const Icon(Icons.delete),
       ),
       title: Text(
-        (produto.amount == null)
-            ? produto.name
-            : "${produto.name} (x${produto.amount!.toInt()})",
+        (widget.product.amount == null) ? widget.product.name : "${widget.product.name} (x${widget.product.amount!.toInt()})",
       ),
       subtitle: Text(
-        (produto.price == null)
-            ? "Clique para adicionar preço"
-            : "R\$ ${produto.price!}",
+        (widget.product.price == null) ? "Clique para adicionar preço" : "R\$ ${widget.product.price!}",
       ),
     );
   }
