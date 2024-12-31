@@ -24,7 +24,9 @@ void main() {
               listinId: 'LISTIN_ID',
               product: product,
               onTap: (Product product) {},
-              onCheckboxTap: ({required Product product, required String listinId}) {},
+              onCheckboxTap: ({required Product product, required String listinId}) {
+                product.isPurchased = !product.isPurchased;
+              },
               onTrailButtonTap: (Product product) {},
             )
           ],
@@ -44,5 +46,10 @@ void main() {
 
     Text textSubtitle = widgetTester.widget<Text>(findSubtitle);
     expect(textSubtitle.data, equals('R\$ ${product.price}'));
+
+    await widgetTester.tap(findCheckbox);
+    await widgetTester.pumpAndSettle();
+
+    expect(widgetTester.widget<Checkbox>(findCheckbox).value, product.isPurchased);
   });
 }
