@@ -12,11 +12,13 @@ void main() {
   group('getListins', () {
     late FirebaseFirestore mockFirestore;
     late String uid;
+    late MockCollectionReference<Map<String, dynamic>> mockCollectionReference;
+
     setUp(
       () {
         mockFirestore = MockFirebaseFirestore();
         MockQuerySnapshot<Map<String, dynamic>> mockQuerySnapshot = MockQuerySnapshot();
-        MockCollectionReference<Map<String, dynamic>> mockCollectionReference = MockCollectionReference();
+        mockCollectionReference = MockCollectionReference();
         MockQueryDocumentSnapshot<Map<String, dynamic>> mockQueryDocumentSnapshot001 = MockQueryDocumentSnapshot();
         MockQueryDocumentSnapshot<Map<String, dynamic>> mockQueryDocumentSnapshot002 = MockQueryDocumentSnapshot();
 
@@ -52,6 +54,12 @@ void main() {
       List<Listin> listins = await listinService.getListins();
 
       expect(listins.length, 2);
+    });
+    test("O método get deve ser chamado apenas uma vez", () async {
+      ListinService listinService = ListinService(uid: uid, firestore: mockFirestore);
+      await listinService.getListins();
+
+      verify(mockCollectionReference.get()).called(1);
     });
   });
 }
